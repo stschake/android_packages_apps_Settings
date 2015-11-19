@@ -41,9 +41,9 @@ public class ReportingServiceManager extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
-            setAlarm(context);
+//            setAlarm(context);
         } else if (intent.getAction().equals(ACTION_LAUNCH_SERVICE)){
-            launchService(context, intent.getBooleanExtra(EXTRA_FORCE, false));
+//            launchService(context, intent.getBooleanExtra(EXTRA_FORCE, false));
         }
     }
 

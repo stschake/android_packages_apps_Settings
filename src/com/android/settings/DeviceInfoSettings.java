@@ -64,6 +64,8 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import rtandroid.RealTimeProxy;
+
 public class DeviceInfoSettings extends SettingsPreferenceFragment implements Indexable {
 
     private static final String LOG_TAG = "DeviceInfoSettings";
@@ -92,6 +94,8 @@ public class DeviceInfoSettings extends SettingsPreferenceFragment implements In
     private static final String KEY_MOD_BUILD_DATE = "build_date";
     private static final String KEY_MOD_API_LEVEL = "mod_api_level";
     private static final String KEY_CM_UPDATES = "cm_updates";
+    private static final String KEY_CM_LICENSE = "cmlicense";
+    private static final String KEY_RT_SDK_VERSION = "rt_sdk_version";
 
     static final int TAPS_TO_BE_A_DEVELOPER = 7;
     static final int TAPS_TO_SHOW_DEVICEID = 7;
@@ -144,9 +148,10 @@ public class DeviceInfoSettings extends SettingsPreferenceFragment implements In
         final Preference kernelPref = findPreference(KEY_KERNEL_VERSION);
         kernelPref.setEnabled(true);
         kernelPref.setSummary(getFormattedKernelVersion());
-        findPreference(KEY_MOD_VERSION).setSummary(
-                cyanogenmod.os.Build.CYANOGENMOD_DISPLAY_VERSION);
-        findPreference(KEY_MOD_VERSION).setEnabled(true);
+        //findPreference(KEY_MOD_VERSION).setSummary(
+        //        cyanogenmod.os.Build.CYANOGENMOD_DISPLAY_VERSION);
+        //findPreference(KEY_MOD_VERSION).setEnabled(true);
+        setStringSummary(KEY_RT_SDK_VERSION, getRealtimeSDKVersion());
         setValueSummary(KEY_MOD_BUILD_DATE, "ro.build.date");
         setExplicitValueSummary(KEY_MOD_API_LEVEL, constructApiLevelString());
         findPreference(KEY_MOD_API_LEVEL).setEnabled(true);
@@ -464,6 +469,17 @@ public class DeviceInfoSettings extends SettingsPreferenceFragment implements In
         Intent intent = new Intent(Intent.ACTION_BUG_REPORT);
         intent.setPackage(reporterPackage);
         startActivityForResult(intent, 0);
+    }
+
+    private String getRealtimeSDKVersion()
+    {
+        try {
+            RealTimeProxy proxy = new RealTimeProxy();
+            long version = proxy.getVersion();
+            return Long.toString(version);
+        } catch (Exception e) {
+            return "0";
+        }
     }
 
     /**
