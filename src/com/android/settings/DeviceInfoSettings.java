@@ -65,6 +65,8 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import rtandroid.RealTimeProxy;
+
 public class DeviceInfoSettings extends SettingsPreferenceFragment implements Indexable {
 
     private static final String LOG_TAG = "DeviceInfoSettings";
@@ -98,6 +100,7 @@ public class DeviceInfoSettings extends SettingsPreferenceFragment implements In
     private static final String KEY_MOD_BUILD_DATE = "build_date";
     private static final String KEY_CM_UPDATES = "cm_updates";
     private static final String KEY_CM_LICENSE = "cmlicense";
+    private static final String KEY_RT_SDK_VERSION = "rt_sdk_version";
 
     static final int TAPS_TO_BE_A_DEVELOPER = 7;
 
@@ -137,8 +140,9 @@ public class DeviceInfoSettings extends SettingsPreferenceFragment implements In
         setStringSummary(KEY_BUILD_NUMBER, Build.DISPLAY);
         findPreference(KEY_BUILD_NUMBER).setEnabled(true);
         findPreference(KEY_KERNEL_VERSION).setSummary(getFormattedKernelVersion());
-        setValueSummary(KEY_MOD_VERSION, "ro.cm.display.version");
-        findPreference(KEY_MOD_VERSION).setEnabled(true);
+//        setValueSummary(KEY_MOD_VERSION, "ro.cm.display.version");
+//        findPreference(KEY_MOD_VERSION).setEnabled(true);
+        setStringSummary(KEY_RT_SDK_VERSION, getRealtimeSDKVersion());
         setValueSummary(KEY_MOD_BUILD_DATE, "ro.build.date");
 
         if (!SELinux.isSELinuxEnabled()) {
@@ -379,6 +383,17 @@ public class DeviceInfoSettings extends SettingsPreferenceFragment implements In
         Intent intent = new Intent(Intent.ACTION_BUG_REPORT);
         intent.setPackage(reporterPackage);
         startActivityForResult(intent, 0);
+    }
+
+    private String getRealtimeSDKVersion()
+    {
+        try {
+            RealTimeProxy proxy = new RealTimeProxy();
+            long version = proxy.getVersion();
+            return Long.toString(version);
+        } catch (Exception e) {
+            return "0";
+        }
     }
 
     /**

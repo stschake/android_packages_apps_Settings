@@ -9,6 +9,8 @@ LOCAL_STATIC_JAVA_LIBRARIES := \
 	jsr305 \
 	org.cyanogenmod.platform.sdk
 
+LOCAL_JAVA_LIBRARIES += rtandroid.sdk
+
 LOCAL_MODULE_TAGS := optional
 
 LOCAL_SRC_FILES := \
