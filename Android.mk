@@ -16,6 +16,8 @@ LOCAL_PACKAGE_NAME := Settings
 LOCAL_CERTIFICATE := platform
 LOCAL_PRIVILEGED_MODULE := true
 
+LOCAL_JAVA_LIBRARIES += rtandroid.sdk
+
 LOCAL_PROGUARD_FLAG_FILES := proguard.flags
 
 ifneq ($(INCREMENTAL_BUILDS),)

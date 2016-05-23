@@ -93,8 +93,10 @@
             android:allowBackup="false"
             android:usesCleartextTraffic="true">
 
-        <!-- Settings -->
+        <!-- Allow the usage of the real-time proxy -->
+        <uses-library android:name="rtandroid.sdk" />
 
+        <!-- Settings -->
         <activity android:name="Settings"
                 android:taskAffinity="com.android.settings"
                 android:label="@string/settings_label_launcher"
