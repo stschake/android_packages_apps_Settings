@@ -50,6 +50,8 @@ import java.util.List;
 
 import static com.android.settingslib.RestrictedLockUtils.EnforcedAdmin;
 
+import rtandroid.realtime.RealTimeProxy;
+
 public class DeviceInfoSettings extends SettingsPreferenceFragment implements Indexable {
 
     private static final String LOG_TAG = "DeviceInfoSettings";
@@ -71,6 +73,7 @@ public class DeviceInfoSettings extends SettingsPreferenceFragment implements In
     private static final String PROPERTY_EQUIPMENT_ID = "ro.ril.fccid";
     private static final String KEY_DEVICE_FEEDBACK = "device_feedback";
     private static final String KEY_SAFETY_LEGAL = "safetylegal";
+    private static final String KEY_RT_SDK_VERSION = "rt_sdk_version";
 
     static final int TAPS_TO_BE_A_DEVELOPER = 7;
 
@@ -119,6 +122,7 @@ public class DeviceInfoSettings extends SettingsPreferenceFragment implements In
         setStringSummary(KEY_BUILD_NUMBER, Build.DISPLAY);
         findPreference(KEY_BUILD_NUMBER).setEnabled(true);
         findPreference(KEY_KERNEL_VERSION).setSummary(DeviceInfoUtils.getFormattedKernelVersion());
+        setStringSummary(KEY_RT_SDK_VERSION, getRealtimeSdkVersion());
 
         if (!SELinux.isSELinuxEnabled()) {
             String status = getResources().getString(R.string.selinux_status_disabled);
@@ -352,6 +356,16 @@ public class DeviceInfoSettings extends SettingsPreferenceFragment implements In
                             getResources().getString(R.string.device_info_default)));
         } catch (RuntimeException e) {
             // No recovery
+        }
+    }
+
+    private static String getRealtimeSdkVersion() {
+        try {
+            RealTimeProxy proxy = new RealTimeProxy();
+            long version = proxy.getVersion();
+            return Long.toString(version);
+        } catch (Exception ignored) {
+            return "unknown";
         }
     }
 
